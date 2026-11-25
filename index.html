@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="paper">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>每日英语单词卡 · Daily Words</title>
+  <meta name="description" content="每天北京时间 8:27 解锁 5 个精选单词：滑动卡片、英式美式发音、艾宾浩斯间隔复习。"/>
+  <meta name="theme-color" content="#f5f0e6"/>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23c25e33'/%3E%3Ctext x='32' y='45' font-family='Georgia,serif' font-size='38' fill='%23fffdf8' text-anchor='middle'%3EW%3C/text%3E%3C/svg%3E"/>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark">W</span>
+        <div class="brand-text">
+          <strong>每日英语单词卡</strong>
+          <span id="dayChip">—</span>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button id="btnAbout" class="icon-btn" aria-label="使用说明">
+          <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 10.5v6"/><circle cx="12" cy="7.6" r="0.6" fill="currentColor" stroke="none"/></svg>
+        </button>
+        <button id="btnTheme" class="icon-btn" aria-label="切换配色">
+          <svg class="ico-sun" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 3v2.2M12 18.8V21M3 12h2.2M18.8 12H21M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M18.4 5.6l-1.6 1.6M7.2 16.8l-1.6 1.6"/></svg>
+          <svg class="ico-moon" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13.6A8.4 8.4 0 0 1 10.4 4 8.4 8.4 0 1 0 20 13.6Z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <section class="meta-row">
+      <div class="progress-wrap">
+        <div class="progress-bar"><i id="progressFill"></i></div>
+        <span id="progressText">0 / 5</span>
+      </div>
+      <div id="statsRow" class="stats-row">—</div>
+    </section>
+
+    <main id="stack" class="stack"></main>
+
+    <nav id="actions" class="actions">
+      <button id="btnKeep" class="act-btn keep">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+        已记住
+      </button>
+      <button id="btnAgain" class="act-btn again">
+        明天再练
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 2.3-5.6"/><path d="M4 4v4h4"/></svg>
+      </button>
+    </nav>
+    <p class="swipe-hint">左滑「已记住」 · 右滑「明天再练」</p>
+  </div>
+
+  <!-- 使用说明 -->
+  <div id="aboutOverlay" class="overlay hidden">
+    <div class="sheet">
+      <div class="sheet-head">
+        <h2>使用说明</h2>
+        <button id="btnCloseAbout" class="icon-btn" aria-label="关闭">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <div class="sheet-body">
+        <section>
+          <h3>每日解锁</h3>
+          <p>每天<strong>北京时间 08:27</strong> 解锁当日 5 个新词；首日（2026 年 11 月 25 日）的 5 个词已直接可用。若错过某天，打开页面会优先补上更早未学的批次。</p>
+        </section>
+        <section>
+          <h3>滑动规则</h3>
+          <p><strong>左滑 = 已记住</strong>：按艾宾浩斯遗忘曲线安排下次复习（记住一次间隔 1 → 2 → 4 → 7 → 15 → 30 天，六轮后归入“已掌握”）。<br/><strong>右滑 = 明天再练</strong>：明天重新出现，记忆等级回退一级。</p>
+        </section>
+        <section>
+          <h3>例句与来源</h3>
+          <p>为保证出处真实可靠，本页所有例句均为<strong>自编例句</strong>并逐条标注，不引用未经核实的他人原文。</p>
+        </section>
+        <section>
+          <h3>发音说明</h3>
+          <p>优先使用在线词典真人发音（需联网）；失败时自动降级为系统语音合成（英式 / 美式发音效果取决于设备内置语音包）。</p>
+        </section>
+        <section class="data-ops">
+          <h3>学习数据</h3>
+          <p>进度仅保存在本机浏览器（localStorage），换设备或清浏览器数据会丢失，可先导出备份。</p>
+          <div class="ops-row">
+            <button id="btnExport" class="ghost">导出备份</button>
+            <button id="btnImport" class="ghost">导入备份</button>
+            <button id="btnReset" class="ghost danger">清空进度</button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- 首次使用引导 -->
+  <div id="hintOverlay" class="overlay hidden">
+    <div class="sheet hint-sheet">
+      <h2>这样滑卡片</h2>
+      <div class="hint-rows">
+        <div class="hint-row">
+          <span class="arr left">←</span>
+          <div><b>左滑 · 已记住</b><span>间隔 1 / 2 / 4 / 7 / 15 / 30 天复习</span></div>
+        </div>
+        <div class="hint-row">
+          <span class="arr right">→</span>
+          <div><b>右滑 · 明天再练</b><span>明天再见，等级回退一级</span></div>
+        </div>
+      </div>
+      <p class="muted small">每天北京时间 8:27 解锁 5 个新词；也可以点下方按钮代替滑动。进度自动保存在本机。</p>
+      <button id="btnStart" class="primary">开始学习</button>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="js/words.js"></script>
+  <script src="js/pool.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
